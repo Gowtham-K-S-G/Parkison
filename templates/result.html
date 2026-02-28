@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Result | Parkinson's Disease Detection</title>
+    <meta name="description" content="Parkinson's Disease Detection result using AI">
+    
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-brain me-2"></i>
+                PD Detector
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/how-it-works">How It Works</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Result Section -->
+    <section class="result-page-section py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <!-- Result Card -->
+                    <div class="result-card" id="resultCard">
+                        <!-- Header -->
+                        <div class="result-header text-center" id="resultHeader">
+                            <div class="result-icon" id="resultIcon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <h2 id="resultTitle">Analysis Complete</h2>
+                            <p class="result-subtitle" id="resultSubtitle">Here are your results</p>
+                        </div>
+                        
+                        <!-- Body -->
+                        <div class="result-body">
+                            <div class="row">
+                                <!-- Image Column -->
+                                <div class="col-lg-5 mb-4 mb-lg-0">
+                                    <div class="image-container">
+                                        <img id="resultImage" 
+                                             class="img-fluid rounded shadow" 
+                                             alt="Uploaded Spiral Drawing"
+                                             src="{{ image_path }}">
+                                    </div>
+                                    <div class="image-info mt-3">
+                                        <p class="small text-muted mb-1">
+                                            <i class="fas fa-image me-2"></i>Uploaded Spiral Drawing
+                                        </p>
+                                        <p class="small text-muted">
+                                            <i class="fas fa-clock me-2"></i>Analysis completed at <span id="analysisTime"></span>
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Details Column -->
+                                <div class="col-lg-7">
+                                    <div class="result-details">
+                                        <!-- Main Result -->
+                                        <div class="main-result" id="mainResult">
+                                            <div class="result-label">Prediction</div>
+                                            <div class="result-value" id="predictionText">--</div>
+                                            <div class="confidence-badge" id="confidenceBadge">
+                                                <span id="confidenceText">--</span> confidence
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Probability Distribution -->
+                                        <div class="probability-section mt-4">
+                                            <h5><i class="fas fa-chart-pie me-2"></i>Probability Distribution</h5>
+                                            
+                                            <!-- Healthy Probability -->
+                                            <div class="probability-item">
+                                                <div class="prob-header">
+                                                    <span class="prob-label">
+                                                        <i class="fas fa-user-check me-2"></i>Healthy
+                                                    </span>
+                                                    <span class="prob-value" id="healthyPercent">--</span>
+                                                </div>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-success" 
+                                                         id="healthyBar" 
+                                                         role="progressbar"
+                                                         style="width: 0%">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Parkinson's Probability -->
+                                            <div class="probability-item">
+                                                <div class="prob-header">
+                                                    <span class="prob-label">
+                                                        <i class="fas fa-user-injured me-2"></i>Parkinson's
+                                                    </span>
+                                                    <span class="prob-value" id="parkinsonPercent">--</span>
+                                                </div>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-danger" 
+                                                         id="parkinsonBar" 
+                                                         role="progressbar"
+                                                         style="width: 0%">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Recommendation -->
+                                        <div class="recommendation mt-4" id="recommendation">
+                                            <!-- Dynamic content based on result -->
+                                        </div>
+                                        
+                                        <!-- Action Buttons -->
+                                        <div class="action-buttons mt-4">
+                                            <a href="/" class="btn btn-primary">
+                                                <i class="fas fa-redo me-2"></i>Analyze Another
+                                            </a>
+                                            <button class="btn btn-outline-secondary" onclick="window.print()">
+                                                <i class="fas fa-print me-2"></i>Print Result
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Disclaimer -->
+                    <div class="disclaimer mt-4">
+                        <div class="alert alert-warning">
+                            <h5><i class="fas fa-exclamation-triangle me-2"></i>Important Disclaimer</h5>
+                            <p class="mb-0">
+                                This tool is for educational and research purposes only. The results should 
+                                not be used as a substitute for professional medical diagnosis. Please 
+                                consult with a qualified healthcare provider for proper medical advice.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-light py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Parkinson's Disease Detection System</h5>
+                    <p class="text-muted">AI-powered early detection for better healthcare</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="text-muted mb-0">&copy; 2024 PD Detector. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Get result data from sessionStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            const resultData = JSON.parse(sessionStorage.getItem('predictionResult'));
+            
+            if (resultData) {
+                displayResult(resultData);
+            } else {
+                // If no result data, redirect to home
+                window.location.href = '/';
+            }
+        });
+
+        function displayResult(data) {
+            // Set analysis time
+            document.getElementById('analysisTime').textContent = new Date().toLocaleString();
+            
+            // Set image
+            document.getElementById('resultImage').src = data.image_path;
+            
+            // Set prediction
+            const predictionText = document.getElementById('predictionText');
+            predictionText.textContent = data.result;
+            
+            // Set confidence
+            document.getElementById('confidenceText').textContent = data.confidence;
+            
+            // Set probability bars
+            const healthyPercent = parseFloat(data.probabilities.healthy.percentage);
+            const parkinsonPercent = parseFloat(data.probabilities.parkinson.percentage);
+            
+            document.getElementById('healthyPercent').textContent = data.probabilities.healthy.percentage;
+            document.getElementById('parkinsonPercent').textContent = data.probabilities.parkinson.percentage;
+            
+            document.getElementById('healthyBar').style.width = healthyPercent + '%';
+            document.getElementById('parkinsonBar').style.width = parkinsonPercent + '%';
+            
+            // Set result styling based on prediction
+            const resultHeader = document.getElementById('resultHeader');
+            const resultIcon = document.getElementById('resultIcon');
+            const recommendation = document.getElementById('recommendation');
+            
+            if (data.result_class === 'parkinson') {
+                resultHeader.classList.add('parkinson-result');
+                resultIcon.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+                predictionText.classList.add('text-danger');
+                
+                recommendation.innerHTML = `
+                    <div class="alert alert-danger">
+                        <h5><i class="fas fa-info-circle me-2"></i>Recommendation</h5>
+                        <p class="mb-0">
+                            The analysis suggests potential signs of Parkinson's Disease. 
+                            Please consult with a neurologist for proper evaluation and diagnosis.
+                        </p>
+                    </div>
+                `;
+            } else {
+                resultHeader.classList.add('healthy-result');
+                resultIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
+                predictionText.classList.add('text-success');
+                
+                recommendation.innerHTML = `
+                    <div class="alert alert-success">
+                        <h5><i class="fas fa-info-circle me-2"></i>Recommendation</h5>
+                        <p class="mb-0">
+                            The analysis does not show significant signs of Parkinson's Disease. 
+                            Continue regular check-ups and maintain a healthy lifestyle.
+                        </p>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
