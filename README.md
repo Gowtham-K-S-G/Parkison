@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Parkinson's Disease Detection System
 
 An AI-powered web application for detecting Parkinson's Disease using spiral drawings and Convolutional Neural Networks (CNNs).
@@ -168,3 +169,7 @@ This project is for educational purposes.
 - Parkinson's Disease Foundation
 - Deep Learning for Medical Diagnosis
 - Spiral Drawing Analysis for Parkinson's Detection
+=======
+# Parkison
+An AI-powered web application for detecting Parkinson's Disease using spiral drawings and Convolutional Neural Networks (CNNs).
+>>>>>>> 18db36eb97ae3351a9dea54dbfc35ec47f2cabee
